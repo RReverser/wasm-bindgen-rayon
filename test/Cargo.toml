@@ -12,4 +12,4 @@ crate-type = ["cdylib"]
 [dependencies]
 wasm-bindgen-rayon = { path = ".." }
 wasm-bindgen = "0.2.74"
-rayon = "1.5"
+rayon = "1.8"

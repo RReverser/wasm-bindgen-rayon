@@ -44,7 +44,7 @@ First of all, add this crate as a dependency to your `Cargo.toml` (in addition t
 ```toml
 [dependencies]
 wasm-bindgen = "0.2.74"
-rayon = "1.5"
+rayon = "1.8"
 wasm-bindgen-rayon = "1.0"
 ```
 
