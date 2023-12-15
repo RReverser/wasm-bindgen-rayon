@@ -42,8 +42,8 @@ use js_sys::JsString;
 #[doc(hidden)]
 pub struct wbg_rayon_PoolBuilder {
     num_threads: usize,
-    sender: Sender<rayon::ThreadBuilder>,
-    receiver: Receiver<rayon::ThreadBuilder>,
+    sender: Sender<rayon_core::ThreadBuilder>,
+    receiver: Receiver<rayon_core::ThreadBuilder>,
 }
 
 #[cfg_attr(
@@ -87,7 +87,7 @@ impl wbg_rayon_PoolBuilder {
         self.num_threads
     }
 
-    pub fn receiver(&self) -> *const Receiver<rayon::ThreadBuilder> {
+    pub fn receiver(&self) -> *const Receiver<rayon_core::ThreadBuilder> {
         &self.receiver
     }
 
@@ -95,7 +95,7 @@ impl wbg_rayon_PoolBuilder {
     // Important: it must take `self` by reference, otherwise
     // `start_worker_thread` will try to receive a message on a moved value.
     pub fn build(&mut self) {
-        rayon::ThreadPoolBuilder::new()
+        rayon_core::ThreadPoolBuilder::new()
             .num_threads(self.num_threads)
             // We could use postMessage here instead of Rust channels,
             // but currently we can't due to a Chrome bug that will cause
@@ -126,10 +126,10 @@ pub fn init_thread_pool(num_threads: usize) -> Promise {
 #[wasm_bindgen]
 #[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[doc(hidden)]
-pub fn wbg_rayon_start_worker(receiver: *const Receiver<rayon::ThreadBuilder>)
+pub fn wbg_rayon_start_worker(receiver: *const Receiver<rayon_core::ThreadBuilder>)
 where
     // Statically assert that it's safe to accept `Receiver` from another thread.
-    Receiver<rayon::ThreadBuilder>: Sync,
+    Receiver<rayon_core::ThreadBuilder>: Sync,
 {
     // This is safe, because we know it came from a reference to PoolBuilder,
     // allocated on the heap by wasm-bindgen and dropped only once all the
