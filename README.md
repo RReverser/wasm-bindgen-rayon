@@ -184,7 +184,7 @@ The upcoming Parcel v2 also recognises the used syntax and supports WebAssembly 
 
 ### Usage without bundlers
 
-The default JS glue was designed in a way that works great with bundlers and code-splitting, but, sadly, not yet in browsers due to different treatment of import paths (see [`WICG/import-maps#244`](https://github.com/WICG/import-maps/issues/244) which might help unify those in the future).
+The default JS glue was designed in a way that works great with bundlers and code-splitting, but, sadly, not in browsers due to different treatment of import paths (see [`WICG/import-maps#244`](https://github.com/WICG/import-maps/issues/244)).
 
 If you want to build this library for usage without bundlers, enable the `no-bundler` feature for `wasm-bindgen-rayon` in your `Cargo.toml`:
 
