@@ -11,15 +11,7 @@
  * limitations under the License.
  */
 
-#![cfg_attr(
-    feature = "nightly",
-    feature(external_doc),
-    doc(include = "../README.md")
-)]
-#![cfg_attr(
-    not(feature = "nightly"),
-    doc = "Check out documentation in [README.md](https://github.com/GoogleChromeLabs/wasm-bindgen-rayon)."
-)]
+#![doc = include_str!("../README.md")]
 
 // Note: `atomics` is whitelisted in `target_feature` detection, but `bulk-memory` isn't,
 // so we can check only presence of the former. This should be enough to catch most common
