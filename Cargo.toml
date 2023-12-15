@@ -26,3 +26,5 @@ no-bundler = []
 
 [package.metadata.docs.rs]
 features = ["nightly"]
+default-target = "wasm32-unknown-unknown"
+rustc-args = ["-C", "target-feature=+atomics,+bulk-memory"]
