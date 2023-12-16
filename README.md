@@ -25,7 +25,7 @@
 
 WebAssembly thread support is not yet a first-class citizen in Rust, so there are a few things to keep in mind when using this crate. Bear with me :)
 
-For a quick demo, check out https://rreverser.com/wasm-bindgen-rayon-demo/.
+For a quick demo, check out <https://rreverser.com/wasm-bindgen-rayon-demo/>.
 
 ## Caveats
 
