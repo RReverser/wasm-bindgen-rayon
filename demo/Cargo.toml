@@ -1,7 +1,7 @@
 [package]
 name = "wasm-bindgen-rayon-demo"
 version = "0.1.0"
-authors = ["Ingvar Stepanyan <rreverser@google.com>"]
+authors = ["Ingvar Stepanyan <me@rreverser.com>"]
 edition = "2018"
 publish = false
 
