@@ -11,6 +11,6 @@
  * limitations under the License.
  */
 
-new Worker(new URL('./index.worker.js', import.meta.url), { type: 'module' }).addEventListener('message', () => {
-  globalThis.DONE = true;
-});
+new Worker(new URL('./index.worker.js', import.meta.url), {
+  type: 'module'
+}).addEventListener('message', onDone);
