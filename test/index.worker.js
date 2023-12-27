@@ -13,7 +13,7 @@
 
 import init, { initThreadPool, sum } from './pkg/test.js';
 
-async function runTest() {
+(async () => {
   await init();
   await initThreadPool(navigator.hardwareConcurrency);
   // 1...10
@@ -21,7 +21,5 @@ async function runTest() {
   if (sum(arr) !== 55) {
     throw new Error('Wrong result.');
   }
-  console.log('OK');
-}
-
-runTest().then(postMessage);
+  postMessage(true);
+})().catch(reportError);
