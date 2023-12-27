@@ -12,7 +12,7 @@ exclude = [".github"]
 repository = "https://github.com/RReverser/wasm-bindgen-rayon"
 
 [dependencies]
-wasm-bindgen = "0.2.74"
+wasm-bindgen = "0.2.84"
 rayon-core = "1.12"
 spmc = "0.3.0"
 js-sys = "0.3.48"

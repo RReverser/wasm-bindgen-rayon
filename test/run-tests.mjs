@@ -68,5 +68,4 @@ async function runTest(t) {
 test('no-bundler', runTest);
 test('rollup', runTest);
 test('webpack', runTest);
-// Parcel seems broken for now: https://github.com/parcel-bundler/parcel/issues/8727
-test.skip('parcel', runTest);
+test('parcel', runTest);
