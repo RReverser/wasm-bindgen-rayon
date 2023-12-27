@@ -39,7 +39,7 @@ You must instantiate the main JS+Wasm in a dedicated `Worker` to avoid blocking 
 
 First of all, in order to use `SharedArrayBuffer` on the Web, you need to enable [cross-origin isolation policies](https://web.dev/coop-coep/). Check out the linked article for details.
 
-First of all, add this crate as a dependency to your `Cargo.toml` (in addition to `wasm-bindgen` and `rayon` themselves):
+Then, add this crate as a dependency to your `Cargo.toml` (in addition to `wasm-bindgen` and `rayon` themselves):
 
 ```toml
 [dependencies]
