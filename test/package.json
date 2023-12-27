@@ -18,6 +18,7 @@
 		"webpack-cli": "^5.1.4"
 	},
 	"scripts": {
+		"postinstall": "playwright install --with-deps chromium firefox",
 		"prebuild:bundler": "wasm-pack build --target web --out-name test --out-dir out/bundler-base/pkg && shx cp index.* out/bundler-base",
 		"build:bundler:webpack": "webpack",
 		"build:bundler:rollup": "rollup -c",

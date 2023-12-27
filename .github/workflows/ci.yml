@@ -18,9 +18,6 @@ jobs:
     - name: Install npm deps
       working-directory: ./test
       run: npm ci
-    - name: Install Playwright deps
-      working-directory: ./test
-      run: npx playwright install --with-deps
     - name: Run tests
       working-directory: ./test
       run: npm test
