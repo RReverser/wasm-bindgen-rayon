@@ -11,13 +11,6 @@
  * limitations under the License.
  */
 
-// Note: we use `wasm_bindgen_worker_`-prefixed message types to make sure
-// we can handle bundling into other files, which might happen to have their
-// own `postMessage`/`onmessage` communication channels.
-//
-// If we didn't take that into the account, we could send much simpler signals
-// like just `0` or whatever, but the code would be less resilient.
-
 // Note: this is never used, but necessary to prevent a bug in Firefox
 // (https://bugzilla.mozilla.org/show_bug.cgi?id=1702191) where it collects
 // Web Workers that have a shared WebAssembly memory with the main thread,
