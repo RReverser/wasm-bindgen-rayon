@@ -15,8 +15,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Setup nightly Rust
       run: rustup toolchain install nightly-2022-12-12 --profile minimal --target wasm32-unknown-unknown --component rust-src
+    - name: Install npm deps
+      working-directory: ./test
+      run: npm ci
+    - name: Install Playwright deps
+      working-directory: ./test
+      run: npx playwright install --with-deps
     - name: Run tests
       working-directory: ./test
-      run: |
-        npm ci
-        npm test
+      run: npm test

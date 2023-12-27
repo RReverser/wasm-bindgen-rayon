@@ -11,12 +11,21 @@
  * limitations under the License.
  */
 
-const worker = new Worker(new URL('./index.worker.js', import.meta.url), {
-  type: 'module'
-});
+import { test } from '@playwright/test';
 
-worker.addEventListener('message', onDone);
-
-worker.addEventListener('error', event => {
-  throw event.error;
-});
+for (let name of ['no-bundler', 'rollup', 'webpack', 'parcel']) {
+  test(name, async ({ page }) => {
+    page.on('console', message => {
+      console[message.type()](`${name}: ${message.text()}`);
+    });
+    /** @type {Promise<void>} */
+    let functionExposed;
+    const donePromise = new Promise((resolve, reject) => {
+      functionExposed = page.exposeFunction('onDone', resolve);
+      page.on('pageerror', reject);
+    });
+    await functionExposed;
+    await page.goto(`/${name}/index.html`);
+    await donePromise;
+  });
+}
