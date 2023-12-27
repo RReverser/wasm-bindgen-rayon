@@ -5,7 +5,9 @@ const url = `http://127.0.0.1:3000/`;
 export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  quiet: false,
+  reporter: process.env.CI ? 'github' : 'list',
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
   timeout: 10 * 1000,
   webServer: {
     command: 'npx serve',
