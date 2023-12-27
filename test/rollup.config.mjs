@@ -18,14 +18,14 @@ import html from '@rollup/plugin-html';
 import { readFileSync } from 'fs';
 
 export default {
-  input: './index.js',
+  input: 'out/bundler-base/index.js',
   output: {
-    dir: 'pkg/rollup',
+    dir: 'out/rollup',
     format: 'esm',
     exports: 'named',
     name: 'rollupTest'
   },
   plugins: [nodeResolve(), offMainThread(), importMetaAssets(), html({
-    template: () => readFileSync('./index.html', 'utf-8')
+    template: () => readFileSync('out/bundler-base/index.html', 'utf-8')
   })]
 };

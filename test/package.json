@@ -13,25 +13,19 @@
 		"requirejs": "^2.3.6",
 		"rollup": "^4.9.1",
 		"serve-handler": "^6.1.5",
+		"shx": "^0.3.4",
 		"wasm-pack": "^0.12.1",
 		"webpack": "^5.89.0",
 		"webpack-cli": "^5.1.4"
 	},
-	"targets": {
-		"app": {
-			"distDir": "pkg/parcel"
-		}
-	},
 	"scripts": {
-		"build:wasm": "wasm-pack build --target web --out-name test",
-		"prebuild:bundler": "npm run build:wasm",
+		"prebuild:bundler": "wasm-pack build --target web --out-name test --out-dir out/bundler-base/pkg && shx cp index.* out/bundler-base",
 		"build:bundler:webpack": "webpack",
 		"build:bundler:rollup": "rollup -c",
-		"build:bundler:parcel": "parcel build index.html --dist-dir pkg/parcel --public-url .",
+		"build:bundler:parcel": "parcel build out/bundler-base/index.html --dist-dir out/parcel --public-url .",
 		"build:bundler": "run-p build:bundler:*",
-		"build:no-bundler": "npm run build:wasm -- -- --features wasm-bindgen-rayon/no-bundler",
-		"build": "run-s build:bundler build:no-bundler",
-		"pretest": "npm run build",
+		"build:no-bundler": "wasm-pack build --target web --out-name test --out-dir out/no-bundler/pkg -- --features wasm-bindgen-rayon/no-bundler && shx cp index.* out/no-bundler",
+		"pretest": "run-p build:bundler build:no-bundler",
 		"test": "node run-tests.mjs"
 	}
 }

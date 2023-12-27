@@ -46,7 +46,7 @@ const browser = await logStep(
 
 after(() => browser.close());
 
-async function runTest(t, url = `/pkg/${t.name}/index.html`) {
+async function runTest(t) {
   const { name } = t;
 
   const page = await browser.newPage();
@@ -61,12 +61,12 @@ async function runTest(t, url = `/pkg/${t.name}/index.html`) {
     page.on('pageerror', reject);
   });
   await functionExposed;
-  await page.goto(`http://localhost:${port}${url}`);
+  await page.goto(`http://localhost:${port}/out/${t.name}/index.html`);
   await donePromise;
 }
 
-test('no-bundler', t => runTest(t, '/index.html'));
-test('rollup', t => runTest(t));
-test('webpack', t => runTest(t));
+test('no-bundler', runTest);
+test('rollup', runTest);
+test('webpack', runTest);
 // Parcel seems broken for now: https://github.com/parcel-bundler/parcel/issues/8727
-test.skip('parcel', t => runTest(t));
+test.skip('parcel', runTest);

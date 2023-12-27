@@ -23,12 +23,12 @@ export default {
     minimize: false
   },
   entry: {
-    index: './index.js'
+    index: './out/bundler-base/index.js'
   },
   output: {
-    path: __dirname + '/pkg/webpack/',
+    path: __dirname + '/out/webpack/',
   },
   plugins: [new HtmlWebpackPlugin({
-    template: './index.html',
+    template: './out/bundler-base/index.html',
   })]
 };
