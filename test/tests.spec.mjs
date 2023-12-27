@@ -15,9 +15,6 @@ import { test } from '@playwright/test';
 
 for (let name of ['no-bundler', 'rollup', 'webpack', 'parcel']) {
   test(name, async ({ page }) => {
-    page.on('console', message => {
-      console[message.type()](`${name}: ${message.text()}`);
-    });
     /** @type {Promise<void>} */
     let functionExposed;
     const donePromise = new Promise((resolve, reject) => {

@@ -18,7 +18,6 @@ export default defineConfig({
     baseURL: url
   },
   projects: [
-    /* Test against desktop browsers */
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }
