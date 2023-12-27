@@ -14,12 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Setup nightly Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: nightly-2022-12-12
-        target: wasm32-unknown-unknown
-        profile: minimal
-        components: rust-src
+      run: rustup toolchain install nightly-2022-12-12 --profile minimal --target wasm32-unknown-unknown --component rust-src
     - name: Run tests
       working-directory: ./test
       run: |
