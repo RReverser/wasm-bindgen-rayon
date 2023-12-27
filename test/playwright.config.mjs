@@ -26,9 +26,10 @@ export default defineConfig({
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] }
     },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] }
-    }
+    // Wasm doesn't seem to work in Playwright Webkit.
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] }
+    // }
   ]
 });
