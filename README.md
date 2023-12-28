@@ -174,13 +174,15 @@ wasm-bindgen-rayon provides the required JS code for those Workers internally, a
 
 If you're using Webpack v5 (version >= 5.25.1), you don't need to do anything special, as it already supports [bundling Workers](https://webpack.js.org/guides/web-workers/) out of the box.
 
+### Usage with Parcel
+
+Parcel v2 also recognises the used syntax and works out of the box.
+
 ### Usage with Rollup
 
 For Rollup, you'll need [`@surma/rollup-plugin-off-main-thread`](https://github.com/surma/rollup-plugin-off-main-thread) plugin (version >= 2.1.0) which brings the same functionality and was tested with this crate.
 
-### Usage with Parcel
-
-The upcoming Parcel v2 also recognises the used syntax and supports WebAssembly and Worker bundling, so should work out of the box.
+Alternatively, you can use [Vite](https://vitejs.dev/) which has necessary plugins built-in.
 
 ### Usage without bundlers
 
