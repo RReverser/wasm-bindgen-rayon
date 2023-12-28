@@ -13,10 +13,8 @@
 
 // Note: this will be overridden by the Playwright test runner.
 // The default implementation is provided only for manual testing.
-function onDone() {
-  console.log('OK');
-}
+globalThis.onDone ??= () => console.log('OK');
 
 new Worker(new URL('./index.worker.js', import.meta.url), {
   type: 'module'
-}).addEventListener('message', onDone);
+}).addEventListener('message', globalThis.onDone);
