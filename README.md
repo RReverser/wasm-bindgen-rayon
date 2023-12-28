@@ -14,8 +14,8 @@
   - [Feature detection](#feature-detection)
   - [Usage with various bundlers](#usage-with-various-bundlers)
     - [Usage with Webpack](#usage-with-webpack)
-    - [Usage with Rollup](#usage-with-rollup)
     - [Usage with Parcel](#usage-with-parcel)
+    - [Usage with Rollup](#usage-with-rollup)
     - [Usage without bundlers](#usage-without-bundlers)
 - [License](#license)
 
