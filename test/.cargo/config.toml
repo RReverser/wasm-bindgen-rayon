@@ -1,6 +1,3 @@
-[build]
-target = "wasm32-unknown-unknown"
-
 [target.wasm32-unknown-unknown]
 rustflags = ["-C", "target-feature=+atomics,+bulk-memory,+mutable-globals"]
 

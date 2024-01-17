@@ -104,7 +104,7 @@ In order to reduce risk of breakages, it's strongly recommended to use a fixed n
 The easiest way to configure those flags is:
 
 1. Put a string `nightly-2022-12-12` in a `rust-toolchain` file in your project directory. This tells Rustup to use nightly toolchain by default for your project.
-2. Put the following in a `.cargo/config` file in your project directory:
+2. Put the following in a `.cargo/config.toml` file in your project directory:
 
    ```toml
    [target.wasm32-unknown-unknown]
@@ -119,7 +119,7 @@ The easiest way to configure those flags is:
 Then, run [`wasm-pack`](https://rustwasm.github.io/wasm-pack/book/) as you normally would with `--target web`:
 
 ```sh
-$ wasm-pack build --target web [...normal wasm-pack params...]
+wasm-pack build --target web [...normal wasm-pack params...]
 ```
 
 ### Using command-line params
@@ -130,9 +130,9 @@ In that case, the whole command looks like this:
 
 ```sh
 RUSTFLAGS='-C target-feature=+atomics,+bulk-memory,+mutable-globals' \
-	rustup run nightly-2022-12-12 \
-	wasm-pack build --target web [...] \
-	-- -Z build-std=panic_abort,std
+  rustup run nightly-2022-12-12 \
+  wasm-pack build --target web [...] \
+  -- -Z build-std=panic_abort,std
 ```
 
 It looks a bit scary, but it takes care of everything - choosing the nightly toolchain, enabling the required features as well as telling Cargo to rebuild the standard library. You only need to copy it once and hopefully forget about it :)
