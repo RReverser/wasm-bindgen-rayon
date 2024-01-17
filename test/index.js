@@ -11,10 +11,18 @@
  * limitations under the License.
  */
 
+import init, { initThreadPool, sum } from './pkg/test.js';
+
+await init();
+await initThreadPool(navigator.hardwareConcurrency);
+// 1...10
+let arr = Int32Array.from({ length: 10 }, (_, i) => i + 1);
+if (sum(arr) !== 55) {
+  throw new Error('Wrong result.');
+}
+
 // Note: this will be overridden by the Playwright test runner.
 // The default implementation is provided only for manual testing.
 globalThis.onDone ??= () => console.log('OK');
 
-new Worker(new URL('./index.worker.js', import.meta.url), {
-  type: 'module'
-}).addEventListener('message', globalThis.onDone);
+onDone();

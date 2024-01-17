@@ -11,10 +11,14 @@ readme = "README.md"
 exclude = [".github"]
 repository = "https://github.com/RReverser/wasm-bindgen-rayon"
 
-[dependencies]
+[workspace.dependencies]
 wasm-bindgen = "0.2.84"
-rayon-core = "1.12"
-spmc = "0.3.0"
+rayon = "1.8.1"
+
+[dependencies]
+wasm-bindgen = { workspace = true }
+rayon-core = { version = "1.12.1", features = ["web_spin_lock"] }
+crossbeam-channel = "0.5.9"
 js-sys = "0.3.48"
 
 [workspace]

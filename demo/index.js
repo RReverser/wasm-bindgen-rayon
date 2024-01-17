@@ -11,35 +11,27 @@
  * limitations under the License.
  */
 
-import * as Comlink from 'comlink';
+import { threads } from 'wasm-feature-detect';
 
 const maxIterations = 1000;
 
-const canvas = document.getElementById('canvas');
+const canvas = /** @type {HTMLCanvasElement} */ (
+  document.getElementById('canvas')
+);
 const { width, height } = canvas;
 const ctx = canvas.getContext('2d');
-const timeOutput = document.getElementById('time');
+const timeOutput = /** @type {HTMLOutputElement} */ (
+  document.getElementById('time')
+);
 
-// Create a separate thread from wasm-worker.js and get a proxy to its handlers.
-let handlers = await Comlink.wrap(
-  new Worker(new URL('./wasm-worker.js', import.meta.url), {
-    type: 'module'
-  })
-).handlers;
-
-function setupBtn(id) {
-  // Handlers are named in the same way as buttons.
-  let handler = handlers[id];
-  // If handler doesn't exist, it's not supported.
-  if (!handler) return;
+function setupBtn(id, { generate }) {
   // Assign onclick handler + enable the button.
   Object.assign(document.getElementById(id), {
     async onclick() {
-      let { rawImageData, time } = await handler({
-        width,
-        height,
-        maxIterations
-      });
+      const start = performance.now();
+      const rawImageData = generate(width, height, maxIterations);
+      const time = performance.now() - start;
+
       timeOutput.value = `${time.toFixed(2)} ms`;
       const imgData = new ImageData(rawImageData, width, height);
       ctx.putImageData(imgData, 0, 0);
@@ -48,7 +40,16 @@ function setupBtn(id) {
   });
 }
 
-setupBtn('singleThread');
-if (await handlers.supportsThreads) {
-  setupBtn('multiThread');
-}
+(async function initSingleThread() {
+  const singleThread = await import('./pkg/wasm_bindgen_rayon_demo.js');
+  await singleThread.default();
+  setupBtn('singleThread', singleThread);
+})();
+
+(async function initMultiThread() {
+  if (!(await threads())) return;
+  const multiThread = await import('./pkg-parallel/wasm_bindgen_rayon_demo.js');
+  await multiThread.default();
+  await multiThread.initThreadPool(navigator.hardwareConcurrency);
+  setupBtn('multiThread', multiThread);
+})();

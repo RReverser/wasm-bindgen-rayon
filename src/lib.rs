@@ -19,8 +19,8 @@
 #[cfg(all(not(doc), not(target_feature = "atomics")))]
 compile_error!("Did you forget to enable `atomics` and `bulk-memory` features as outlined in wasm-bindgen-rayon README?");
 
+use crossbeam_channel::{bounded, Receiver, Sender};
 use js_sys::Promise;
-use spmc::{channel, Receiver, Sender};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 
@@ -60,7 +60,7 @@ fn _ensure_worker_emitted() {
 #[wasm_bindgen]
 impl wbg_rayon_PoolBuilder {
     fn new(num_threads: usize) -> Self {
-        let (sender, receiver) = channel();
+        let (sender, receiver) = bounded(num_threads);
         Self {
             num_threads,
             sender,
