@@ -1,11 +1,60 @@
 <!DOCTYPE html>
-<title>Demo for Rust + WebAssembly threads</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo for Rust + WebAssembly threads</title>
+    <style>
+        html, body {
+            height: 100vh;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 3pt;
+        }
+
+        input[type="button"] {
+            flex: 1; /* Distribute available space equally among buttons */
+        }
+
+        #canvas-container {
+            flex-grow: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        #canvas {
+            max-width: 100%; /* Make canvas responsive */
+            max-height: 100%; /* Make canvas responsive */
+            width: auto; /* Make canvas responsive */
+            height: auto; /* Make canvas responsive */
+            aspect-ratio: 1; /* Preserve aspect ratio */
+        }
+
+        p {
+            padding: 3pt;
+        }
+    </style>
+</head>
 <body>
-<p>This is a demo for <a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon">wasm-bindgen-rayon</a>, generating a <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot fractal</a> with WebAssembly threads.</p>
-<input type="button" id="singleThread" value="Draw using a single thread" disabled />
-<input type="button" id="multiThread" value="Draw using all available threads" disabled />
-<output id="time"></output>
-<br />
-<canvas id="canvas" width="700" height="700"></canvas>
-<script src="index.js"></script>
+    <p>This is a demo for <a href="https://github.com/RReverser/wasm-bindgen-rayon">wasm-bindgen-rayon</a>, generating a <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot fractal</a> with WebAssembly threads.</p>
+    <div class="button-container">
+        <input type="button" id="singleThread" value="Draw using a single thread" disabled>
+        <input type="button" id="multiThread" value="Draw using all available threads" disabled>
+    </div>
+    <p><output id="time">Click one of the buttons to see the image & timings.</output></p>
+    <div id="canvas-container">
+        <canvas id="canvas" width="700" height="700"></canvas>
+    </div>
+    <script src="index.js"></script>
 </body>
+</html>
