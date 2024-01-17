@@ -35,12 +35,12 @@ Before we get started, check out caveats listed in the [wasm-bindgen threading d
 
 In order to use `SharedArrayBuffer` on the Web, you need to enable [cross-origin isolation policies](https://web.dev/coop-coep/). Check out the linked article for details.
 
-Then, add this crate as a dependency to your `Cargo.toml` (in addition to `wasm-bindgen` and `rayon` themselves):
+Then, add `wasm-bindgen`, `rayon` with a `web_spin_lock` feature, and this crate as dependencies to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 wasm-bindgen = "0.2.74"
-rayon = "1.8"
+rayon = { version = "1.8", features = ["web_spin_lock"] }
 wasm-bindgen-rayon = "1.0"
 ```
 
