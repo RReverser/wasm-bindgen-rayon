@@ -17,7 +17,7 @@ rayon = { version = "1.8.1", features = ["web_spin_lock"] }
 
 [dependencies]
 wasm-bindgen = { workspace = true }
-rayon-core = { version = "1.12.1", features = ["web_spin_lock"] }
+rayon = { workspace = true }
 crossbeam-channel = "0.5.9"
 js-sys = "0.3.48"
 

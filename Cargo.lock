@@ -186,6 +186,7 @@ checksum = "fa7237101a77a10773db45d62004a272517633fbcc3df19d96455ede1122e051"
 dependencies = [
  "either",
  "rayon-core",
+ "wasm_sync",
 ]
 
 [[package]]
@@ -276,7 +277,7 @@ version = "1.2.0"
 dependencies = [
  "crossbeam-channel",
  "js-sys",
- "rayon-core",
+ "rayon",
  "wasm-bindgen",
 ]
 
