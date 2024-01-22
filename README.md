@@ -23,9 +23,13 @@
 
 # Usage
 
-WebAssembly thread support is not yet a first-class citizen in Rust, so there are a few things to keep in mind when using this crate. Bear with me :)
+WebAssembly thread support is not yet a first-class citizen in Rust - it's still only available in nightly - so there are a few things to keep in mind when using this crate. Bear with me :)
 
-For a quick demo, check out <https://rreverser.com/wasm-bindgen-rayon-demo/>.
+For a quick demo, check out [this Mandelbrot fractal generator](https://rreverser.com/wasm-bindgen-rayon-demo/):
+
+| Single thread | Multi-threading |
+|---------------|-----------------|
+| ![Drawn using a single thread: 268ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/2dbac1c2-1136-41b7-b872-2244ae01b888) | ![Drawn using all available threads via wasm-bindgen-rayon: 87ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/d4d5b834-c849-4e8c-98a4-5f0aa8f9524a) |
 
 ## Caveats
 
@@ -95,7 +99,7 @@ This is because the Wasm code needs to take its own object (the `WebAssembly.Mod
 
 The other issue is that the Rust standard library for the WebAssembly target is built without threads support to ensure maximum portability.
 
-Since we do want standard APIs like [`Mutex`, `Arc` and so on to work](https://doc.rust-lang.org/std/sync/), you'll need to use the nightly compiler toolchain and pass some flags to rebuild the standard library in addition to your own code.
+Since we do want standard allocator be thread-safe and APIs like [`Mutex`, `Arc` and so on](https://doc.rust-lang.org/std/sync/) to work, you'll need to use the nightly compiler toolchain and pass some flags to rebuild the standard library in addition to your own code.
 
 In order to reduce risk of breakages, it's strongly recommended to use a fixed nightly version. For example, the latest stable Rust at the moment of writing is version 1.66, which corresponds to `nightly-2022-12-12`, which was tested and works with this crate.
 
