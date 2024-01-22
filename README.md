@@ -29,7 +29,7 @@ For a quick demo, check out [this Mandelbrot fractal generator](https://rreverse
 
 | Single thread | Multi-threading |
 |---------------|-----------------|
-| ![Drawn using a single thread: 268ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/2dbac1c2-1136-41b7-b872-2244ae01b888) | ![Drawn using all available threads via wasm-bindgen-rayon: 87ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/d4d5b834-c849-4e8c-98a4-5f0aa8f9524a) |
+| ![Drawn using a single thread: 273ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/665cb157-8734-460d-8a0a-a67370e00cb7) | ![Drawn using all available threads via wasm-bindgen-rayon: 87ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/db32a88a-0e77-4974-94fc-1b993030ca92) |
 
 ## Caveats
 
