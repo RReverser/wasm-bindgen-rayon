@@ -13,10 +13,8 @@
 use hsl::HSL;
 use num_complex::Complex64;
 use rand::Rng;
-use wasm_bindgen::{prelude::*, Clamped};
-
-#[cfg(feature = "parallel")]
 use rayon::prelude::*;
+use wasm_bindgen::{prelude::*, Clamped};
 
 #[cfg(feature = "parallel")]
 pub use wasm_bindgen_rayon::init_thread_pool;
@@ -74,18 +72,12 @@ impl Generator {
             .copied()
     }
 
-    // Multi-threaded implementation.
-    #[cfg(feature = "rayon")]
     fn iter_bytes(&self) -> impl '_ + ParallelIterator<Item = u8> {
         (0..self.height)
+            // Note: when built without atomics, into_par_iter() will
+            // automatically fall back to single-threaded mode.
             .into_par_iter()
             .flat_map_iter(move |y| self.iter_row_bytes(y))
-    }
-
-    // Single-threaded implementation.
-    #[cfg(not(feature = "rayon"))]
-    fn iter_bytes(&self) -> impl '_ + Iterator<Item = u8> {
-        (0..self.height).flat_map(move |y| self.iter_row_bytes(y))
     }
 }
 
