@@ -15,7 +15,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "comlink": "^4.4.1",
     "wasm-feature-detect": "^1.6.1"
   }
 }
