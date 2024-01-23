@@ -27,9 +27,20 @@ WebAssembly thread support is not yet a first-class citizen in Rust - it's still
 
 For a quick demo, check out [this Mandelbrot fractal generator](https://rreverser.com/wasm-bindgen-rayon-demo/):
 
-| Single thread | Multi-threading |
-|---------------|-----------------|
-| ![Drawn using a single thread: 273ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/665cb157-8734-460d-8a0a-a67370e00cb7) | ![Drawn using all available threads via wasm-bindgen-rayon: 87ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/db32a88a-0e77-4974-94fc-1b993030ca92) |
+<table width="100%">
+  <tr>
+  <td width="50%">
+
+![Drawn using a single thread: 273ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/665cb157-8734-460d-8a0a-a67370e00cb7)
+    
+  </td>
+  <td width="50%">
+
+![Drawn using all available threads via wasm-bindgen-rayon: 87ms](https://github.com/RReverser/wasm-bindgen-rayon/assets/557590/db32a88a-0e77-4974-94fc-1b993030ca92)
+    
+  </td>
+  </tr>
+</table>
 
 ## Caveats
 
