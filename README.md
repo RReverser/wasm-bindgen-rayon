@@ -43,9 +43,9 @@ Then, add `wasm-bindgen`, `rayon`, and this crate as dependencies to your `Cargo
 
 ```toml
 [dependencies]
-wasm-bindgen = "0.2.74"
+wasm-bindgen = "0.2"
 rayon = "1.8"
-wasm-bindgen-rayon = "1.0"
+wasm-bindgen-rayon = "1.2"
 ```
 
 Then, reexport the `init_thread_pool` function:
@@ -191,7 +191,7 @@ The default JS glue was designed in a way that works great with bundlers and cod
 If you want to build this library for usage without bundlers, enable the `no-bundler` feature for `wasm-bindgen-rayon` in your `Cargo.toml`:
 
 ```toml
-wasm-bindgen-rayon = { version = "1.0", features = ["no-bundler"] }
+wasm-bindgen-rayon = { version = "1.2", features = ["no-bundler"] }
 ```
 
 # License
