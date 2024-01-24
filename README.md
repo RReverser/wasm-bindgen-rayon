@@ -42,10 +42,6 @@ For a quick demo, check out [this Mandelbrot fractal generator](https://rreverse
   </tr>
 </table>
 
-## Caveats
-
-Before we get started, check out caveats listed in the [wasm-bindgen threading docs](https://rustwasm.github.io/wasm-bindgen/examples/raytrace.html). While this library specifically targets Rayon and automatically provides the necessary shims for you, some of the caveats still apply.
-
 ## Setting up
 
 In order to use `SharedArrayBuffer` on the Web, you need to enable [cross-origin isolation policies](https://web.dev/coop-coep/). Check out the linked article for details.
