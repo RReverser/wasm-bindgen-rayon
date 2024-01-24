@@ -152,29 +152,6 @@ RUSTFLAGS='-C target-feature=+atomics,+bulk-memory,+mutable-globals' \
 
 It looks a bit scary, but it takes care of everything - choosing the nightly toolchain, enabling the required features as well as telling Cargo to rebuild the standard library. You only need to copy it once and hopefully forget about it :)
 
-## Feature detection
-
-[Not all browsers](https://webassembly.org/roadmap/) support WebAssembly threads yet, so you'll likely want to make two builds - one with threads support and one without - and use feature detection to choose the right one on the JavaScript side.
-
-You can use [`wasm-feature-detect`](https://github.com/GoogleChromeLabs/wasm-feature-detect) library for this purpose. The code will look roughly like this:
-
-```js
-import { threads } from 'wasm-feature-detect';
-
-let wasmPkg;
-
-if (await threads()) {
-  wasmPkg = await import('./pkg-with-threads/index.js');
-  await wasmPkg.default();
-  await wasmPkg.initThreadPool(navigator.hardwareConcurrency);
-} else {
-  wasmPkg = await import('./pkg-without-threads/index.js');
-  await wasmPkg.default();
-}
-
-wasmPkg.nowCallAnyExportedFuncs();
-```
-
 ## Usage with various bundlers
 
 WebAssembly threads use Web Workers under the hood for instantiating other threads with the same WebAssembly module & memory.
@@ -203,6 +180,29 @@ If you want to build this library for usage without bundlers, enable the `no-bun
 
 ```toml
 wasm-bindgen-rayon = { version = "1.2", features = ["no-bundler"] }
+```
+
+## Feature detection
+
+If you're targeting [older browser versions that didn't support WebAssembly threads yet](https://webassembly.org/roadmap/), you'll likely want to make two builds - one with threads support and one without - and use feature detection to choose the right one on the JavaScript side.
+
+You can use [`wasm-feature-detect`](https://github.com/GoogleChromeLabs/wasm-feature-detect) library for this purpose. The code will look roughly like this:
+
+```js
+import { threads } from 'wasm-feature-detect';
+
+let wasmPkg;
+
+if (await threads()) {
+  wasmPkg = await import('./pkg-with-threads/index.js');
+  await wasmPkg.default();
+  await wasmPkg.initThreadPool(navigator.hardwareConcurrency);
+} else {
+  wasmPkg = await import('./pkg-without-threads/index.js');
+  await wasmPkg.default();
+}
+
+wasmPkg.nowCallAnyExportedFuncs();
 ```
 
 # License
