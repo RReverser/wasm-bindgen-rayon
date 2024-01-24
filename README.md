@@ -11,12 +11,12 @@
   - [Building Rust code](#building-rust-code)
     - [Using config files](#using-config-files)
     - [Using command-line params](#using-command-line-params)
-  - [Feature detection](#feature-detection)
   - [Usage with various bundlers](#usage-with-various-bundlers)
     - [Usage with Webpack](#usage-with-webpack)
     - [Usage with Parcel](#usage-with-parcel)
     - [Usage with Rollup](#usage-with-rollup)
     - [Usage without bundlers](#usage-without-bundlers)
+  - [Feature detection](#feature-detection)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
