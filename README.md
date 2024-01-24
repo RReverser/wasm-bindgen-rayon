@@ -105,7 +105,7 @@ This is because the Wasm code needs to take its own object (the `WebAssembly.Mod
 
 The other issue is that the Rust standard library for the WebAssembly target is built without threads support to ensure maximum portability.
 
-Since we do want standard allocator be thread-safe and APIs like [`Mutex`, `Arc` and so on](https://doc.rust-lang.org/std/sync/) to work, you'll need to use the nightly compiler toolchain and pass some flags to rebuild the standard library in addition to your own code.
+Since we want standard library to be thread-safe and [`std::sync`](https://doc.rust-lang.org/std/sync/) APIs to work, you'll need to use the nightly compiler toolchain and pass some flags to rebuild the standard library in addition to your own code.
 
 In order to reduce risk of breakages, it's strongly recommended to use a fixed nightly version. For example, the latest stable Rust at the moment of writing is version 1.66, which corresponds to `nightly-2022-12-12`, which was tested and works with this crate.
 
