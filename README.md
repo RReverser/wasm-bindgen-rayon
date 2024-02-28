@@ -165,7 +165,7 @@ Parcel v2 also recognises the used syntax and works out of the box.
 
 For Rollup, you'll need [`@surma/rollup-plugin-off-main-thread`](https://github.com/surma/rollup-plugin-off-main-thread) plugin (version >= 2.1.0) which brings the same functionality and was tested with this crate.
 
-Alternatively, you can use [Vite](https://vitejs.dev/) which has necessary plugins built-in.
+For [Vite](https://vitejs.dev/), use [`@surma/rollup-plugin-off-main-thread`](https://github.com/surma/rollup-plugin-off-main-thread) only in [`production` mode](https://vitejs.dev/guide/env-and-mode#modes).
 
 ### Usage without bundlers
 
