@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite';
 import offMainThread from '@surma/rollup-plugin-off-main-thread';
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const plugins =
+    mode === 'production'
+      ? [ offMainThread() ]
+      : []
 	return {
-		plugins: [
-      // offMainThread(),
-		],
+		plugins,
     server:{
       headers:{
 				'Cross-Origin-Opener-Policy': 'same-origin',
@@ -13,6 +15,7 @@ export default defineConfig(() => {
 			},
     },
     root: './out/bundler-base/',
+    base: './',
 		build: {
       outDir: '../vite',
       minify: false,
