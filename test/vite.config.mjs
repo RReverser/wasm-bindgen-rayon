@@ -1,10 +1,7 @@
 import { defineConfig } from 'vite';
-import offMainThread from '@surma/rollup-plugin-off-main-thread';
 
-export default defineConfig(({ mode }) => {
-	const plugins = mode === 'production' ? [offMainThread()] : [];
+export default defineConfig(() => {
 	return {
-		plugins,
 		server: {
 			headers: {
 				'Cross-Origin-Opener-Policy': 'same-origin',
