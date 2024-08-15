@@ -74,11 +74,11 @@ impl wbg_rayon_PoolBuilder {
     pub fn main_js(&self) -> JsString {
         #[wasm_bindgen]
         extern "C" {
-            #[wasm_bindgen(js_namespace = ["import", "meta"], js_name = url)]
+            #[wasm_bindgen(thread_local, js_namespace = ["import", "meta"], js_name = url)]
             static URL: JsString;
         }
 
-        URL.clone()
+        URL.with(Clone::clone)
     }
 
     #[wasm_bindgen(js_name = numThreads)]

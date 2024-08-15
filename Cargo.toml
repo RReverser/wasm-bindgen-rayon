@@ -12,14 +12,14 @@ exclude = [".github"]
 repository = "https://github.com/RReverser/wasm-bindgen-rayon"
 
 [workspace.dependencies]
-wasm-bindgen = "0.2.84"
+wasm-bindgen = "0.2.93"
 rayon = { version = "1.8.1", features = ["web_spin_lock"] }
 
 [dependencies]
 wasm-bindgen = { workspace = true }
 rayon = { workspace = true }
 crossbeam-channel = "0.5.9"
-js-sys = "0.3.48"
+js-sys = "0.3.70"
 
 [workspace]
 members = ["demo", "test"]
