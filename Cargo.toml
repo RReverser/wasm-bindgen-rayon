@@ -2,7 +2,7 @@
 name = "wasm-bindgen-rayon"
 version = "1.2.1"
 authors = ["Ingvar Stepanyan <me@rreverser.com>"]
-edition = "2018"
+edition = "2021"
 license = "Apache-2.0"
 description = "Adapter for using Rayon-based concurrency on the Web"
 keywords = ["web", "thread", "parallel", "concurrency", "webassembly"]
