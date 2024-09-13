@@ -8,5 +8,5 @@
 # channel = "stable"
 # If you change this, adjust the toolchain in the pipeline accordingly, otherwise the pipelines will and up very slow.
 channel = "nightly-2024-08-02"
-components = ["rust-src", "rustfmt", "clippy"]
+components = ["rust-src"]
 targets = ["wasm32-unknown-unknown"]
