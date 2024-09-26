@@ -22,7 +22,7 @@
 import initWbg, { wbg_rayon_start_worker } from '../../../';
 
 onmessage = async ({ data: { module, memory, receiver } }) => {
-  await initWbg(module, memory);
+  await initWbg({ module, memory });
   postMessage(true);
   wbg_rayon_start_worker(receiver);
 };
