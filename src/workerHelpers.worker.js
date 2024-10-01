@@ -21,8 +21,8 @@
 // and temporary bugs so that you don't need to deal with them in your code.
 import initWbg, { wbg_rayon_start_worker } from '../../../';
 
-onmessage = async ({ data: { module, memory, receiver } }) => {
-  await initWbg({ module, memory });
+onmessage = async ({ data: { receiver, ...initData } }) => {
+  await initWbg(initData);
   postMessage(true);
   wbg_rayon_start_worker(receiver);
 };
