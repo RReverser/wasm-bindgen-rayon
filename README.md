@@ -107,7 +107,7 @@ The other issue is that the Rust standard library for the WebAssembly target is 
 
 Since we want standard library to be thread-safe and [`std::sync`](https://doc.rust-lang.org/std/sync/) APIs to work, you'll need to use the nightly compiler toolchain and pass some flags to rebuild the standard library in addition to your own code.
 
-In order to reduce risk of breakages, it's strongly recommended to use a fixed nightly version. For example, the latest stable Rust at the moment of writing is version 1.66, which corresponds to `nightly-2024-08-02`, which was tested and works with this crate.
+In order to reduce risk of breakages, it's strongly recommended to use a fixed nightly version. This crate was tested with `nightly-2024-08-02`.
 
 ### Using config files
 
