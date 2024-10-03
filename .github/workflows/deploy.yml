@@ -11,10 +11,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup stable Rust
-      run: rustup target add wasm32-unknown-unknown
-    - name: Setup nightly Rust
-      run: rustup toolchain install nightly-2022-12-12 --profile minimal --target wasm32-unknown-unknown --component rust-src
+        # For some reason installing the rust toolchain via wasm-pack leads to CI failures.
+    # This will read the top level rustup-toolchain.toml and install the required stuff.
+    - name: Trigger toolchain installation
+      working-directory: ./demo
+      run: cargo fetch
     - name: Build demo
       working-directory: ./demo
       run: |

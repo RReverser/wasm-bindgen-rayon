@@ -53,6 +53,7 @@ extern "C" {
 }
 
 #[cfg(not(feature = "no-bundler"))]
+#[allow(unused_must_use)]
 fn _ensure_worker_emitted() {
     // Just ensure that the worker is emitted into the output folder, but don't actually use the URL.
     wasm_bindgen::link_to!(module = "/src/workerHelpers.worker.js");
@@ -74,11 +75,11 @@ impl wbg_rayon_PoolBuilder {
     pub fn main_js(&self) -> JsString {
         #[wasm_bindgen]
         extern "C" {
-            #[wasm_bindgen(js_namespace = ["import", "meta"], js_name = url)]
+            #[wasm_bindgen(thread_local, js_namespace = ["import", "meta"], js_name = url)]
             static URL: JsString;
         }
 
-        URL.clone()
+        URL.with(Clone::clone)
     }
 
     #[wasm_bindgen(js_name = numThreads)]

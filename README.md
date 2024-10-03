@@ -107,13 +107,21 @@ The other issue is that the Rust standard library for the WebAssembly target is 
 
 Since we want standard library to be thread-safe and [`std::sync`](https://doc.rust-lang.org/std/sync/) APIs to work, you'll need to use the nightly compiler toolchain and pass some flags to rebuild the standard library in addition to your own code.
 
-In order to reduce risk of breakages, it's strongly recommended to use a fixed nightly version. For example, the latest stable Rust at the moment of writing is version 1.66, which corresponds to `nightly-2022-12-12`, which was tested and works with this crate.
+In order to reduce risk of breakages, it's strongly recommended to use a fixed nightly version. This crate was tested with `nightly-2024-08-02`.
 
 ### Using config files
 
 The easiest way to configure those flags is:
 
-1. Put a string `nightly-2022-12-12` in a `rust-toolchain` file in your project directory. This tells Rustup to use nightly toolchain by default for your project.
+1. Put the following in a `rust-toolchain.toml` file in your project directory:
+  ```toml
+  [toolchain]
+  channel = "nightly-2024-08-02"
+  components = ["rust-src"]
+  targets = ["wasm32-unknown-unknown"]
+  ```
+  
+  This tells rustup to use a fixed nightly toolchain with the wasm-target for your project, and to install rust-src, which is required for `build-std`.
 2. Put the following in a `.cargo/config.toml` file in your project directory:
 
    ```toml
@@ -140,7 +148,7 @@ In that case, the whole command looks like this:
 
 ```sh
 RUSTFLAGS='-C target-feature=+atomics,+bulk-memory,+mutable-globals' \
-  rustup run nightly-2022-12-12 \
+  rustup run nightly-2024-08-02 \
   wasm-pack build --target web [...] \
   -- -Z build-std=panic_abort,std
 ```
