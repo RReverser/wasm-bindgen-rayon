@@ -12,6 +12,9 @@ jobs:
     - name: Install npm deps
       working-directory: ./test
       run: npm ci
+    - name: Trigger rustup installation
+      working-directory: ./test
+      run: cargo check
     - name: Run tests
       working-directory: ./test
       run: npm test

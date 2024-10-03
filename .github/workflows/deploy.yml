@@ -11,6 +11,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Trigger rustup installation
+      working-directory: ./test
+      run: cargo check
     - name: Build demo
       working-directory: ./demo
       run: |
