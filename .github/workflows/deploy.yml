@@ -14,7 +14,7 @@ jobs:
         # For some reason installing the rust toolchain via wasm-pack leads to CI failures.
     # This will read the top level rustup-toolchain.toml and install the required stuff.
     - name: Trigger toolchain installation
-      working-directory: ./test
+      working-directory: ./demo
       run: cargo fetch
     - name: Build demo
       working-directory: ./demo
