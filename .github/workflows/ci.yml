@@ -9,8 +9,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup nightly Rust
-      run: rustup toolchain install nightly-2024-08-02 --profile minimal --target wasm32-unknown-unknown --component rust-src
     - name: Install npm deps
       working-directory: ./test
       run: npm ci

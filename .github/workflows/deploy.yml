@@ -11,10 +11,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup stable Rust
-      run: rustup target add wasm32-unknown-unknown
-    - name: Setup nightly Rust
-      run: rustup toolchain install nightly-2024-08-02 --profile minimal --target wasm32-unknown-unknown --component rust-src
     - name: Build demo
       working-directory: ./demo
       run: |
