@@ -11,11 +11,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    # For some reason isntalling the rust toolchain via wasm-pack leads to CI failures.
-    # This check will read the top level rustup-toolchain.toml and install the required stuff.
+        # For some reason installing the rust toolchain via wasm-pack leads to CI failures.
+    # This will read the top level rustup-toolchain.toml and install the required stuff.
     - name: Trigger toolchain installation
       working-directory: ./test
-      run: cargo check
+      run: cargo fetch
     - name: Build demo
       working-directory: ./demo
       run: |
