@@ -12,7 +12,9 @@ jobs:
     - name: Install npm deps
       working-directory: ./test
       run: npm ci
-    - name: Trigger rustup installation
+    # For some reason isntalling the rust toolchain via wasm-pack leads to CI failures.
+    # This check will read the top level rustup-toolchain.toml and install the required stuff.
+    - name: Trigger toolchain installation
       working-directory: ./test
       run: cargo check
     - name: Run tests
