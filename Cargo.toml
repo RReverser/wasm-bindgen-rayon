@@ -1,6 +1,6 @@
 [package]
 name = "wasm-bindgen-rayon"
-version = "1.2.1"
+version = "1.2.2"
 authors = ["Ingvar Stepanyan <me@rreverser.com>"]
 edition = "2021"
 license = "Apache-2.0"
