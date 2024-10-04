@@ -16,7 +16,7 @@
 // Note: `atomics` is whitelisted in `target_feature` detection, but `bulk-memory` isn't,
 // so we can check only presence of the former. This should be enough to catch most common
 // mistake (forgetting to pass `RUSTFLAGS` altogether).
-#[cfg(all(not(doc), not(target_feature = "atomics")))]
+#[cfg(all(target_arch = "wasm32", not(doc), not(target_feature = "atomics")))]
 compile_error!("Did you forget to enable `atomics` and `bulk-memory` features as outlined in wasm-bindgen-rayon README?");
 
 use crossbeam_channel::{bounded, Receiver, Sender};
@@ -53,6 +53,7 @@ extern "C" {
 }
 
 #[cfg(not(feature = "no-bundler"))]
+#[allow(unused_must_use)]
 fn _ensure_worker_emitted() {
     // Just ensure that the worker is emitted into the output folder, but don't actually use the URL.
     wasm_bindgen::link_to!(module = "/src/workerHelpers.worker.js");
@@ -74,11 +75,11 @@ impl wbg_rayon_PoolBuilder {
     pub fn main_js(&self) -> JsString {
         #[wasm_bindgen]
         extern "C" {
-            #[wasm_bindgen(js_namespace = ["import", "meta"], js_name = url)]
+            #[wasm_bindgen(thread_local, js_namespace = ["import", "meta"], js_name = url)]
             static URL: JsString;
         }
 
-        URL.clone()
+        URL.with(Clone::clone)
     }
 
     #[wasm_bindgen(js_name = numThreads)]

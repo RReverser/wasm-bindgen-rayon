@@ -9,11 +9,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup nightly Rust
-      run: rustup toolchain install nightly-2022-12-12 --profile minimal --target wasm32-unknown-unknown --component rust-src
     - name: Install npm deps
       working-directory: ./test
       run: npm ci
+    # For some reason installing the rust toolchain via wasm-pack leads to CI failures.
+    # This will read the top level rustup-toolchain.toml and install the required stuff.
+    - name: Trigger toolchain installation
+      working-directory: ./test
+      run: cargo fetch
     - name: Run tests
       working-directory: ./test
       run: npm test
