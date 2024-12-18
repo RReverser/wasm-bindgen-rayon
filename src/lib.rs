@@ -52,13 +52,6 @@ extern "C" {
     fn start_workers(module: JsValue, memory: JsValue, builder: wbg_rayon_PoolBuilder) -> Promise;
 }
 
-#[cfg(not(feature = "no-bundler"))]
-#[allow(unused_must_use)]
-fn _ensure_worker_emitted() {
-    // Just ensure that the worker is emitted into the output folder, but don't actually use the URL.
-    wasm_bindgen::link_to!(module = "/src/workerHelpers.worker.js");
-}
-
 #[wasm_bindgen]
 impl wbg_rayon_PoolBuilder {
     fn new(num_threads: usize) -> Self {
