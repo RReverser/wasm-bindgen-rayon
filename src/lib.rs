@@ -75,7 +75,7 @@ impl wbg_rayon_PoolBuilder {
     pub fn main_js(&self) -> JsString {
         #[wasm_bindgen]
         extern "C" {
-            #[wasm_bindgen(thread_local, js_namespace = ["import", "meta"], js_name = url)]
+            #[wasm_bindgen(thread_local_v2, js_namespace = ["import", "meta"], js_name = url)]
             static URL: JsString;
         }
 
