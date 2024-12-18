@@ -28,7 +28,7 @@ function waitForMsgType(target, type) {
   });
 }
 
-waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
+waitForMsgType(self, 'wasm_bindgen_worker_init').then(async ({ init, receiver }) => {
   // # Note 1
   // Our JS should have been generated in
   // `[out-dir]/snippets/wasm-bindgen-rayon-[hash]/workerHelpers.js`,
@@ -52,9 +52,9 @@ waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
   // cheap since the requested file is already in cache (it was loaded by
   // the main thread).
   const pkg = await import('../../..');
-  await pkg.default(data.module, data.memory);
+  await pkg.default(init);
   postMessage({ type: 'wasm_bindgen_worker_ready' });
-  pkg.wbg_rayon_start_worker(data.receiver);
+  pkg.wbg_rayon_start_worker(receiver);
 });
 
 // Note: this is never used, but necessary to prevent a bug in Firefox
@@ -73,8 +73,7 @@ export async function startWorkers(module, memory, builder) {
 
   const workerInit = {
     type: 'wasm_bindgen_worker_init',
-    module,
-    memory,
+    init: { module_or_path: module, memory },
     receiver: builder.receiver()
   };
 
