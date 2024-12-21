@@ -75,7 +75,7 @@ export async function startWorkers(module, memory, builder) {
       // Note: we could use `../../..` as the URL here to inline workerHelpers.js
       // into the parent entry instead of creating another split point, but some
       // bundlers don't support that in `new Worker` expressions.
-      const worker = new Worker(new URL('./workerHelpers.js', import.meta.url), {
+      const worker = new Worker(/* webpackChunkName: 'wasm-bindgen-rayon' */ new URL('./workerHelpers.js', import.meta.url), {
         type: 'module'
       });
       worker.postMessage(workerInit);
