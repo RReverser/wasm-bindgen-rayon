@@ -114,6 +114,7 @@ In order to reduce risk of breakages, it's strongly recommended to use a fixed n
 The easiest way to configure those flags is:
 
 1. Put the following in a `rust-toolchain.toml` file in your project directory:
+
   ```toml
   [toolchain]
   channel = "nightly-2024-08-02"

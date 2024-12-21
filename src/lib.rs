@@ -106,8 +106,13 @@ impl wbg_rayon_PoolBuilder {
     }
 }
 
+/// Function exposed as `initThreadPool` to JS (see the main docs).
+///
+/// Normally, you'd invoke this function from JS to initialize the thread pool.
+/// However, if you strongly prefer, you can use [wasm-bindgen-futures](https://rustwasm.github.io/wasm-bindgen/reference/js-promises-and-rust-futures.html) to invoke and await this function from Rust.
+///
+/// Note that doing so comes with extra initialization and Wasm size overhead for the JS<->Rust Promise integration.
 #[wasm_bindgen(js_name = initThreadPool)]
-#[doc(hidden)]
 pub fn init_thread_pool(num_threads: usize) -> Promise {
     start_workers(
         wasm_bindgen::module(),
