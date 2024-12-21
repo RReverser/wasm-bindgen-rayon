@@ -26,9 +26,21 @@ export default {
     index: './out/bundler-base/index.js'
   },
   output: {
-    path: __dirname + '/out/webpack/',
+    path: __dirname + '/out/webpack/'
   },
-  plugins: [new HtmlWebpackPlugin({
-    template: './out/bundler-base/index.html',
-  })]
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './out/bundler-base/index.html'
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false
+        }
+      }
+    ]
+  }
 };
