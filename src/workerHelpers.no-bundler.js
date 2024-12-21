@@ -29,7 +29,7 @@ function waitForMsgType(target, type) {
 // messages on the page.
 waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
   const pkg = await import(data.mainJS);
-  await pkg.default(data.module, data.memory);
+  await pkg.initSync(data.init);
   postMessage({ type: 'wasm_bindgen_worker_ready' });
   pkg.wbg_rayon_start_worker(data.receiver);
 });
@@ -41,8 +41,7 @@ export async function startWorkers(module, memory, builder) {
 
   const workerInit = {
     type: 'wasm_bindgen_worker_init',
-    module,
-    memory,
+    init: { module, memory },
     receiver: builder.receiver(),
     mainJS: builder.mainJS()
   };

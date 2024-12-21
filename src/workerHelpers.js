@@ -28,7 +28,7 @@ function waitForMsgType(target, type) {
   });
 }
 
-waitForMsgType(self, 'wasm_bindgen_worker_init').then(async ({ init, receiver }) => {
+waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
   // # Note 1
   // Our JS should have been generated in
   // `[out-dir]/snippets/wasm-bindgen-rayon-[hash]/workerHelpers.js`,
@@ -43,18 +43,13 @@ waitForMsgType(self, 'wasm_bindgen_worker_init').then(async ({ init, receiver })
   // This could be a regular import, but then some bundlers complain about
   // circular deps.
   //
-  // Dynamic import could be cheap if this file was inlined into the parent,
-  // which would require us just using `../../..` in `new Worker` below,
-  // but that doesn't work because wasm-pack unconditionally adds
-  // "sideEffects":false (see below).
-  //
   // OTOH, even though it can't be inlined, it should be still reasonably
   // cheap since the requested file is already in cache (it was loaded by
   // the main thread).
   const pkg = await import('../../..');
-  await pkg.default(init);
+  pkg.initSync(data.init);
   postMessage({ type: 'wasm_bindgen_worker_ready' });
-  pkg.wbg_rayon_start_worker(receiver);
+  pkg.wbg_rayon_start_worker(data.receiver);
 });
 
 export async function startWorkers(module, memory, builder) {
@@ -64,7 +59,7 @@ export async function startWorkers(module, memory, builder) {
 
   const workerInit = {
     type: 'wasm_bindgen_worker_init',
-    init: { module_or_path: module, memory },
+    init: { module, memory },
     receiver: builder.receiver()
   };
 
@@ -72,20 +67,14 @@ export async function startWorkers(module, memory, builder) {
     Array.from({ length: builder.numThreads() }, async () => {
       // Self-spawn into a new Worker.
       //
-      // TODO: while `new URL('...', import.meta.url) becomes a semi-standard
+      // TODO: while `new URL('...', import.meta.url) is a semi-standard
       // way to get asset URLs relative to the module across various bundlers
       // and browser, ideally we should switch to `import.meta.resolve`
-      // once it becomes a standard.
+      // once it becomes supported across bundlers as well.
       //
       // Note: we could use `../../..` as the URL here to inline workerHelpers.js
-      // into the parent entry instead of creating another split point -
-      // this would be preferable from optimization perspective -
-      // however, Webpack then eliminates all message handler code
-      // because wasm-pack produces "sideEffects":false in package.json
-      // unconditionally.
-      //
-      // The only way to work around that is to have side effect code
-      // in an entry point such as Worker file itself.
+      // into the parent entry instead of creating another split point, but some
+      // bundlers don't support that in `new Worker` expressions.
       const worker = new Worker(new URL('./workerHelpers.js', import.meta.url), {
         type: 'module'
       });
