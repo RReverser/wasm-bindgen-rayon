@@ -30,7 +30,8 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './out/bundler-base/index.html'
+      template: './out/bundler-base/index.html',
+      inject: false
     })
   ],
   module: {
