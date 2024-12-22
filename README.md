@@ -166,6 +166,8 @@ wasm-bindgen-rayon provides the required JS code for those Workers internally, a
 
 If you're using Webpack v5 (version >= 5.25.1), you don't need to do anything special, as it already supports [bundling Workers](https://webpack.js.org/guides/web-workers/) out of the box.
 
+Note that, unlike other bundlers, Webpack will warn about circular dependency because it uses content-based hashing. In our case, we do need to import the same module in both the main thread and the Worker, so this warning can be safely ignored. Hopefully, Webpack will implement support for circular ES modules (which are allowed by the spec) in the future.
+
 ### Usage with Parcel
 
 Parcel v2 also recognises the used syntax and works out of the box.
