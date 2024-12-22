@@ -28,28 +28,21 @@ function waitForMsgType(target, type) {
   });
 }
 
+// # Note
+// Our JS should have been generated in
+// `[out-dir]/snippets/wasm-bindgen-rayon-[hash]/workerHelpers.js`,
+// resolve the main module via `../../..`.
+//
+// This might need updating if the generated structure changes on wasm-bindgen
+// side ever in the future, but works well with bundlers today. The whole
+// point of this crate, after all, is to abstract away unstable features
+// and temporary bugs so that you don't need to deal with them in your code.
+import { initSync, wbg_rayon_start_worker } from '../../..';
+
 waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
-  // # Note 1
-  // Our JS should have been generated in
-  // `[out-dir]/snippets/wasm-bindgen-rayon-[hash]/workerHelpers.js`,
-  // resolve the main module via `../../..`.
-  //
-  // This might need updating if the generated structure changes on wasm-bindgen
-  // side ever in the future, but works well with bundlers today. The whole
-  // point of this crate, after all, is to abstract away unstable features
-  // and temporary bugs so that you don't need to deal with them in your code.
-  //
-  // # Note 2
-  // This could be a regular import, but then some bundlers complain about
-  // circular deps.
-  //
-  // OTOH, even though it can't be inlined, it should be still reasonably
-  // cheap since the requested file is already in cache (it was loaded by
-  // the main thread).
-  const pkg = await import('../../..');
-  pkg.initSync(data.init);
+  initSync(data.init);
   postMessage({ type: 'wasm_bindgen_worker_ready' });
-  pkg.wbg_rayon_start_worker(data.receiver);
+  wbg_rayon_start_worker(data.receiver);
 });
 
 export async function startWorkers(module, memory, builder) {
@@ -71,9 +64,15 @@ export async function startWorkers(module, memory, builder) {
       // Note: we could use `../../..` as the URL here to inline workerHelpers.js
       // into the parent entry instead of creating another split point, but some
       // bundlers don't support that in `new Worker` expressions.
-      const worker = new Worker(/* webpackChunkName: 'wasm-bindgen-rayon' */ new URL('./workerHelpers.js', import.meta.url), {
-        type: 'module'
-      });
+      const worker = new Worker(
+        /* webpackChunkName: 'wasm-bindgen-rayon' */ new URL(
+          './workerHelpers.js',
+          import.meta.url
+        ),
+        {
+          type: 'module'
+        }
+      );
       worker.postMessage(workerInit);
       await waitForMsgType(worker, 'wasm_bindgen_worker_ready');
       return worker;
