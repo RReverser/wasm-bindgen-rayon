@@ -13,7 +13,7 @@
 
 import { test } from '@playwright/test';
 
-for (let name of ['no-bundler', 'rollup', 'webpack', 'parcel']) {
+for (let name of ['no-bundler', 'rollup', 'webpack', 'parcel', 'vite']) {
   test(name, async ({ page }) => {
     /** @type {Promise<void>} */
     let functionExposed;

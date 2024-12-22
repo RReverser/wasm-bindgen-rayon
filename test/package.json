@@ -14,13 +14,15 @@
 		"shx": "0.3.4",
 		"wasm-pack": "0.13.1",
 		"webpack": "5.97.1",
-		"webpack-cli": "^5.1.4"
+		"webpack-cli": "^5.1.4",
+		"vite": "6.0.5"
 	},
 	"scripts": {
 		"postinstall": "playwright install chromium firefox",
 		"prebuild:bundler": "wasm-pack build --target web --out-name test --out-dir out/bundler-base/pkg && shx cp index.* out/bundler-base",
 		"build:bundler:webpack": "webpack",
 		"build:bundler:rollup": "rollup -c",
+		"build:bundler:vite": "vite build",
 		"build:bundler:parcel": "parcel build out/bundler-base/index.html --dist-dir out/parcel --public-url . --no-optimize",
 		"build:bundler": "run-p build:bundler:*",
 		"build:no-bundler": "wasm-pack build --target web --out-name test --out-dir out/no-bundler/pkg -- --features wasm-bindgen-rayon/no-bundler && shx cp index.* out/no-bundler",
