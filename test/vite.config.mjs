@@ -6,6 +6,7 @@ export default defineConfig(() => {
 		base: './',
 		build: {
 			outDir: '../vite',
+			emptyOutDir: true,
 			minify: false,
 			target: 'es2022',
 		},
