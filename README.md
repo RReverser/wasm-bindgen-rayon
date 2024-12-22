@@ -114,6 +114,7 @@ In order to reduce risk of breakages, it's strongly recommended to use a fixed n
 The easiest way to configure those flags is:
 
 1. Put the following in a `rust-toolchain.toml` file in your project directory:
+
   ```toml
   [toolchain]
   channel = "nightly-2024-08-02"
@@ -126,7 +127,7 @@ The easiest way to configure those flags is:
 
    ```toml
    [target.wasm32-unknown-unknown]
-   rustflags = ["-C", "target-feature=+atomics,+bulk-memory,+mutable-globals"]
+   rustflags = ["-C", "target-feature=+atomics,+bulk-memory"]
 
    [unstable]
    build-std = ["panic_abort", "std"]
@@ -147,7 +148,7 @@ If you prefer not to configure those parameters by default, you can pass them as
 In that case, the whole command looks like this:
 
 ```sh
-RUSTFLAGS='-C target-feature=+atomics,+bulk-memory,+mutable-globals' \
+RUSTFLAGS='-C target-feature=+atomics,+bulk-memory' \
   rustup run nightly-2024-08-02 \
   wasm-pack build --target web [...] \
   -- -Z build-std=panic_abort,std

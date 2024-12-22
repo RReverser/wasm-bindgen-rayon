@@ -52,16 +52,13 @@ extern "C" {
     fn start_workers(module: JsValue, memory: JsValue, builder: wbg_rayon_PoolBuilder) -> Promise;
 }
 
-#[cfg(not(feature = "no-bundler"))]
-#[allow(unused_must_use)]
-fn _ensure_worker_emitted() {
-    // Just ensure that the worker is emitted into the output folder, but don't actually use the URL.
-    wasm_bindgen::link_to!(module = "/src/workerHelpers.worker.js");
-}
-
 #[wasm_bindgen]
 impl wbg_rayon_PoolBuilder {
     fn new(num_threads: usize) -> Self {
+        #[cfg(debug_assertions)]
+        if num_threads == 0 {
+            wasm_bindgen::throw_str("Number of threads must be greater than zero.");
+        }
         let (sender, receiver) = bounded(num_threads);
         Self {
             num_threads,
@@ -75,7 +72,7 @@ impl wbg_rayon_PoolBuilder {
     pub fn main_js(&self) -> JsString {
         #[wasm_bindgen]
         extern "C" {
-            #[wasm_bindgen(thread_local, js_namespace = ["import", "meta"], js_name = url)]
+            #[wasm_bindgen(thread_local_v2, js_namespace = ["import", "meta"], js_name = url)]
             static URL: JsString;
         }
 
@@ -113,8 +110,13 @@ impl wbg_rayon_PoolBuilder {
     }
 }
 
+/// Function exposed as `initThreadPool` to JS (see the main docs).
+///
+/// Normally, you'd invoke this function from JS to initialize the thread pool.
+/// However, if you strongly prefer, you can use [wasm-bindgen-futures](https://rustwasm.github.io/wasm-bindgen/reference/js-promises-and-rust-futures.html) to invoke and await this function from Rust.
+///
+/// Note that doing so comes with extra initialization and Wasm size overhead for the JS<->Rust Promise integration.
 #[wasm_bindgen(js_name = initThreadPool)]
-#[doc(hidden)]
 pub fn init_thread_pool(num_threads: usize) -> Promise {
     start_workers(
         wasm_bindgen::module(),

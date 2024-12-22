@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -19,19 +19,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default {
   mode: 'production',
-  optimization: {
-    minimize: false
-  },
-  entry: {
-    index: './out/bundler-base/index.js'
-  },
+  entry: './index.js',
   output: {
-    path: __dirname + '/out/webpack/'
+    path: __dirname + '/dist',
+    filename: 'index.js'
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './out/bundler-base/index.html',
-      inject: false
+    new CopyPlugin({
+      patterns: ['index.html']
     })
   ],
   module: {

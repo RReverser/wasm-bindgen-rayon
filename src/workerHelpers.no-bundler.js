@@ -17,7 +17,7 @@
 function waitForMsgType(target, type) {
   return new Promise(resolve => {
     target.addEventListener('message', function onMsg({ data }) {
-      if (data == null || data.type !== type) return;
+      if (data?.type !== type) return;
       target.removeEventListener('message', onMsg);
       resolve(data);
     });
@@ -29,34 +29,20 @@ function waitForMsgType(target, type) {
 // messages on the page.
 waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
   const pkg = await import(data.mainJS);
-  await pkg.default(data.module, data.memory);
+  await pkg.initSync(data.init);
   postMessage({ type: 'wasm_bindgen_worker_ready' });
   pkg.wbg_rayon_start_worker(data.receiver);
 });
 
-// Note: this is never used, but necessary to prevent a bug in Firefox
-// (https://bugzilla.mozilla.org/show_bug.cgi?id=1702191) where it collects
-// Web Workers that have a shared WebAssembly memory with the main thread,
-// but are not explicitly rooted via a `Worker` instance.
-//
-// By storing them in a variable, we can keep `Worker` objects around and
-// prevent them from getting GC-d.
-let _workers;
-
 export async function startWorkers(module, memory, builder) {
-  if (builder.numThreads() === 0) {
-    throw new Error(`num_threads must be > 0.`);
-  }
-
   const workerInit = {
     type: 'wasm_bindgen_worker_init',
-    module,
-    memory,
+    init: { module, memory },
     receiver: builder.receiver(),
     mainJS: builder.mainJS()
   };
 
-  _workers = await Promise.all(
+  await Promise.all(
     Array.from({ length: builder.numThreads() }, async () => {
       // Self-spawn into a new Worker.
       // The script is fetched as a blob so it works even if this script is
