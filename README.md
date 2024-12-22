@@ -13,7 +13,7 @@
   - [Usage with various bundlers](#usage-with-various-bundlers)
     - [Usage with Webpack](#usage-with-webpack)
     - [Usage with Parcel](#usage-with-parcel)
-    - [Usage with Rollup](#usage-with-rollup)
+    - [Usage with Rollup / Vite](#usage-with-rollup--vite)
     - [Usage without bundlers](#usage-without-bundlers)
   - [Feature detection](#feature-detection)
 - [License](#license)
@@ -170,11 +170,11 @@ If you're using Webpack v5 (version >= 5.25.1), you don't need to do anything sp
 
 Parcel v2 also recognises the used syntax and works out of the box.
 
-### Usage with Rollup
+### Usage with Rollup / Vite
 
-For Rollup, you'll need [`@surma/rollup-plugin-off-main-thread`](https://github.com/surma/rollup-plugin-off-main-thread) plugin (version >= 2.1.0) which brings the same functionality and was tested with this crate.
+We recommend using [Vite](https://vitejs.dev/) for Rollup users, as it has all the necessary plugins built-in.
 
-Alternatively, you can use [Vite](https://vitejs.dev/) which has necessary plugins built-in.
+Alternatively, you should be able to configure Rollup yourself with plugins like [`@surma/rollup-plugin-off-main-thread`](https://github.com/surma/rollup-plugin-off-main-thread) and [`@web/rollup-plugin-import-meta-assets`](https://modern-web.dev/docs/building/rollup-plugin-import-meta-assets/) to bundle Worker and WebAssembly assets respectively.
 
 ### Usage without bundlers
 
