@@ -27,12 +27,14 @@ function waitForMsgType(target, type) {
 // We need to wait for a specific message because this file is used both
 // as a Worker and as a regular script, so it might receive unrelated
 // messages on the page.
-waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
-  const pkg = await import(data.mainJS);
-  await pkg.initSync(data.init);
-  postMessage({ type: 'wasm_bindgen_worker_ready' });
-  pkg.wbg_rayon_start_worker(data.receiver);
-});
+if (name === "wasm_bindgen_worker") {
+  waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
+    const pkg = await import(data.mainJS);
+    await pkg.initSync(data.init);
+    postMessage({ type: 'wasm_bindgen_worker_ready' });
+    pkg.wbg_rayon_start_worker(data.receiver);
+  });
+}
 
 export async function startWorkers(module, memory, builder) {
   const workerInit = {
@@ -51,7 +53,8 @@ export async function startWorkers(module, memory, builder) {
       let scriptBlob = await fetch(import.meta.url).then(r => r.blob());
       let url = URL.createObjectURL(scriptBlob);
       const worker = new Worker(url, {
-        type: 'module'
+        type: 'module',
+        name: 'wasm_bindgen_worker'
       });
       worker.postMessage(workerInit);
       await waitForMsgType(worker, 'wasm_bindgen_worker_ready');

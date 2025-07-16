@@ -39,11 +39,13 @@ function waitForMsgType(target, type) {
 // and temporary bugs so that you don't need to deal with them in your code.
 import { initSync, wbg_rayon_start_worker } from '../../..';
 
-waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
-  initSync(data.init);
-  postMessage({ type: 'wasm_bindgen_worker_ready' });
-  wbg_rayon_start_worker(data.receiver);
-});
+if (name === "wasm_bindgen_worker") {
+  waitForMsgType(self, 'wasm_bindgen_worker_init').then(async data => {
+    initSync(data.init);
+    postMessage({ type: 'wasm_bindgen_worker_ready' });
+    wbg_rayon_start_worker(data.receiver);
+  });
+}
 
 export async function startWorkers(module, memory, builder) {
   const workerInit = {
@@ -70,7 +72,8 @@ export async function startWorkers(module, memory, builder) {
           import.meta.url
         ),
         {
-          type: 'module'
+          type: 'module',
+          name: 'wasm_bindgen_worker'
         }
       );
       worker.postMessage(workerInit);
