@@ -1,6 +1,6 @@
 [toolchain]
 # If you change this, adjust the toolchain elsewhere accordingly.
-channel = "nightly-2024-08-02"
+channel = "nightly-2025-11-15"
 components = ["rust-src"]
 targets = ["wasm32-unknown-unknown"]
 profile = "minimal"

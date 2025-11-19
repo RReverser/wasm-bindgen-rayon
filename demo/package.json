@@ -2,9 +2,10 @@
   "private": true,
   "scripts": {
     "build:wasm-st": "wasm-pack build --target web",
-    "build:wasm-mt": "cross-env RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory\" wasm-pack build --target web --out-dir pkg-parallel -- --features parallel -Z build-std=panic_abort,std",
+    "build:wasm-mt": "cross-env RUSTFLAGS=\"-C target-feature=+atomics,+bulk-memory -Clink-arg=--shared-memory -Clink-arg=--max-memory=1073741824 -Clink-arg=--import-memory -Clink-arg=--export=__wasm_init_tls -Clink-arg=--export=__tls_size -Clink-arg=--export=__tls_align -Clink-arg=--export=__tls_base\" wasm-pack build --target web --out-dir pkg-parallel -- --features parallel -Z build-std=panic_abort,std",
     "build:wasm": "run-p build:wasm-st build:wasm-mt",
-    "build": "npm run build:wasm && webpack build"
+    "build": "npm run build:wasm && webpack build",
+    "serve": "npm run build && serve dist --config ../serve.json"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^12.0.2",
