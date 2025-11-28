@@ -68,9 +68,9 @@ export async function startWorkers(module, memory, builder) {
       // bundlers don't support that in `new Worker` expressions.
       const worker = new Worker(
         /* webpackChunkName: 'wasm-bindgen-rayon' */ new URL(
-          './workerHelpers.js',
-          import.meta.url
-        ),
+        './workerHelpers.js',
+        import.meta.url
+      ),
         {
           type: 'module',
           name: 'wasm_bindgen_worker'
@@ -81,5 +81,5 @@ export async function startWorkers(module, memory, builder) {
       return worker;
     })
   );
-  builder.build();
+  return builder;
 }

@@ -31,7 +31,7 @@ use js_sys::JsString;
 // Naming is a workaround for https://github.com/rustwasm/wasm-bindgen/issues/2429
 // and https://github.com/rustwasm/wasm-bindgen/issues/1762.
 #[allow(non_camel_case_types)]
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = "PoolBuilder")]
 #[doc(hidden)]
 pub struct wbg_rayon_PoolBuilder {
     num_threads: usize,
@@ -52,7 +52,8 @@ extern "C" {
     fn start_workers(module: JsValue, memory: JsValue, builder: wbg_rayon_PoolBuilder) -> Promise;
 }
 
-#[wasm_bindgen]
+
+#[wasm_bindgen(js_class="PoolBuilder")]
 impl wbg_rayon_PoolBuilder {
     fn new(num_threads: usize) -> Self {
         #[cfg(debug_assertions)]
@@ -88,25 +89,18 @@ impl wbg_rayon_PoolBuilder {
         &self.receiver
     }
 
-    // This should be called by the JS side once all the Workers are spawned.
-    // Important: it must take `self` by reference, otherwise
-    // `start_worker_thread` will try to receive a message on a moved value.
-    pub fn build(&mut self) {
-        ThreadPoolBuilder::new()
-            .num_threads(self.num_threads)
-            // We could use postMessage here instead of Rust channels,
-            // but currently we can't due to a Chrome bug that will cause
-            // the main thread to lock up before it even sends the message:
-            // https://bugs.chromium.org/p/chromium/issues/detail?id=1075645
-            .spawn_handler(move |thread| {
-                // Note: `send` will return an error if there are no receivers.
-                // We can use it because all the threads are spawned and ready to accept
-                // messages by the time we call `build()` to instantiate spawn handler.
-                self.sender.send(thread).unwrap_throw();
-                Ok(())
-            })
-            .build_global()
-            .unwrap_throw();
+    pub fn clone(&self) -> Self {
+        Self {
+            num_threads: self.num_threads,
+            sender: self.sender.clone(),
+            receiver: self.receiver.clone(),
+        }
+    }
+}
+
+impl wbg_rayon_PoolBuilder {
+    pub fn sender(&self) -> &Sender<ThreadBuilder> {
+        &self.sender
     }
 }
 
@@ -118,11 +112,51 @@ impl wbg_rayon_PoolBuilder {
 /// Note that doing so comes with extra initialization and Wasm size overhead for the JS<->Rust Promise integration.
 #[wasm_bindgen(js_name = initThreadPool)]
 pub fn init_thread_pool(num_threads: usize) -> Promise {
+
+    let builder = wbg_rayon_PoolBuilder::new(num_threads);
+    let prom = start_workers(
+        wasm_bindgen::module(),
+        wasm_bindgen::memory(),
+        builder.clone(),
+    );
+
+    let builder_closure = Closure::once(move |_| {
+        build_global_pool(&builder);
+    });
+
+    let chained = prom.then(&builder_closure);
+    // This may leak memory in unsupported platforms
+    builder_closure.forget();
+    chained
+}
+
+#[wasm_bindgen(js_name = initWorkerPool)]
+pub fn init_worker_pool(num_threads: usize) -> Promise {
     start_workers(
         wasm_bindgen::module(),
         wasm_bindgen::memory(),
         wbg_rayon_PoolBuilder::new(num_threads),
     )
+}
+
+// This should be called by the JS side once all the Workers are spawned.
+#[wasm_bindgen(js_name = "buildGlobalPool")]
+pub fn build_global_pool(builder: &wbg_rayon_PoolBuilder) {
+    ThreadPoolBuilder::new()
+        .num_threads(builder.num_threads())
+        // We could use postMessage here instead of Rust channels,
+        // but currently we can't due to a Chrome bug that will cause
+        // the main thread to lock up before it even sends the message:
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=1075645
+        .spawn_handler(move |thread| {
+            // Note: `send` will return an error if there are no receivers.
+            // We can use it because all the threads are spawned and ready to accept
+            // messages by the time we call `build()` to instantiate spawn handler.
+            builder.sender().send(thread).unwrap_throw();
+            Ok(())
+        })
+        .build_global()
+        .unwrap_throw();
 }
 
 #[wasm_bindgen]

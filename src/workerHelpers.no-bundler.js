@@ -62,5 +62,5 @@ export async function startWorkers(module, memory, builder) {
       return worker;
     })
   );
-  builder.build();
+  return builder;
 }
